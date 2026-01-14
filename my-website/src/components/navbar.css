@@ -1,0 +1,42 @@
+.navbar-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  padding: 0.75rem 0;
+  backdrop-filter: blur(8px);
+}
+
+.navbar {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+
+  padding: 0.6rem 1.4rem;
+  border-radius: 999px;
+  width: fit-content;
+  max-width: 90%;
+}
+
+.navbar a {
+  text-decoration: none;
+  color: var(--color-muted);
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  transition: color .2s ease, background .2s ease;
+}
+
+.navbar a:hover {
+  color: var(--color-text);
+  background: rgba(251,150,55,0.12);
+}
+
+.navbar a.active {
+  color: var(--color-text);
+  background: rgba(251,150,55,0.25);
+  border-radius: 999px;
+}

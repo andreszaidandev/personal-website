@@ -1,0 +1,68 @@
+/* src/App.css */
+:root {
+  --color-primary: #fb9637;   /* orange accent */
+  --color-text: #21222e;      /* deep gray text */
+  --color-muted: #4b4f5c;     /* softer text */
+  --color-bg: #f5f5f5;        /* main background */
+  --color-surface: #ffffff;   /* cards and surfaces */
+  --color-border: #e4e4e4;    /* subtle line */
+}
+
+
+
+body {
+  margin: 0;
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+main {
+  max-width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+}
+
+
+#Profile {
+  background-color: #FEF5EF;
+}
+
+
+#Education {
+  background-color: #9D5C63;
+}
+
+
+#Projects {
+  background-color: #fb9637;
+}
+
+
+#Experience {
+  background-color: #ffe8d6;
+}
+
+
+#Contact {
+  background-color: #fce4ec;
+}
+
+
+#Resume {
+  background-color: #fffde7;
+}
+
