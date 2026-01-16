@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
 import Hero from "./components/hero";
 import Education from "./components/education";
+import Projects from "./components/projects";
+
 // import other sections...
 import "./App.css";
+
+
 
 
 function App() {
@@ -51,11 +55,11 @@ function App() {
         </section>
 
         <section id="Projects">
-          {/* your Skills component */}
+          <Projects />
         </section>
 
         <section id="Experience">
-          {/* your Experience component */}
+          
         </section>
 
         <section id="Contact">
