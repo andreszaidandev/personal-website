@@ -1,8 +1,8 @@
 // src/App.jsx
 import { useEffect, useState } from "react";
 import Navbar from "./components/navbar";
-import Hero from "./components/Hero";
-import Education from "./components/Education";
+import Hero from "./components/hero";
+import Education from "./components/education";
 // import other sections...
 import "./App.css";
 
