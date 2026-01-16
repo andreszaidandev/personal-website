@@ -1,3 +1,20 @@
+/* --- General Layout --- */
+.education-section-wrapper {
+  width: 100%;
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.education-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
 /* --- Left Section: Cards --- */
 .education-cards-left {
   display: flex;
@@ -9,21 +26,16 @@
 .education-card,
 .VTURCS-card {
   position: relative;
-  /* CHANGED: Use min-height instead of fixed height so it can grow if needed */
-  min-height: 300px; 
+  /* RESTORED: Fixed height to keep cards the same */
+  height: 300px; 
   border-radius: 20px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  overflow: hidden; /* Cuts off anything that tries to stick out */
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: default;
-  
-  /* Flex ensures inner content stretches properly */
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
 }
 
 .education-card:hover,
@@ -34,112 +46,197 @@
 
 /* Overlay Gradient */
 .education-details {
-  /* CHANGED: Removed absolute positioning so text drives the height */
+  position: absolute;
+  bottom: 0;
+  left: 0;
   width: 100%;
+  height: 100%;
   
-  /* Stronger gradient to ensure text readability on all image types */
+  /* Gradient makes text readable */
   background: linear-gradient(
     to top,
-    rgba(0, 0, 0, 0.95) 10%,
-    rgba(0, 0, 0, 0.8) 40%,
-    rgba(0, 0, 0, 0.4) 80%,
-    transparent 100%
+    rgba(0, 0, 0, 0.95) 15%,
+    rgba(0, 0, 0, 0.7) 50%,
+    rgba(0, 0, 0, 0.1) 100%
   );
   
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-end; /* Pushes text to bottom */
   padding: 2rem;
   color: #fff;
-  
-  /* Ensure this sits at the bottom if content is short */
-  margin-top: auto; 
 }
 
-/* Card Text Typography */
+/* Typography */
 .education-degree {
   font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.2rem; /* Tightened spacing */
   text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-  line-height: 1.2; /* Better spacing for multi-line titles */
+  line-height: 1.1;
 }
 
 .education-institution {
   font-size: 1.1rem;
   font-weight: 500;
-  margin-bottom: 0.5rem;
-  opacity: 0.95; /* Increased opacity for readability */
+  margin-bottom: 0.3rem;
+  opacity: 0.95;
+  line-height: 1.2;
 }
 
 .education-dates,
 .education-honors {
   font-size: 0.9rem;
   font-weight: 400;
-  opacity: 0.85;
-  margin-bottom: 0.2rem;
+  opacity: 0.8;
+  margin-bottom: 0.1rem;
 }
 
 .education-description {
-  margin-top: 0.8rem;
+  margin-top: 0.5rem;
   font-size: 0.95rem;
-  line-height: 1.5;
+  line-height: 1.2;
   opacity: 0.9;
-  max-width: 100%; /* Allow full width usage */
+  word-wrap: break-word;
+  margin-right: 1rem;
+  
+}
+
+/* --- Right Section: Skills & Spline --- */
+.education-right-section {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.education-skills {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.education-skills-row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  width: 100%;
+  flex-wrap: wrap;
+}
+
+.education-skills-row--center {
+  justify-content: center;
+}
+
+.education-skill-icon-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  transition: transform 0.2s ease;
+}
+
+.education-skill-icon-item:hover {
+  transform: scale(1.1);
+}
+
+.skill-icon {
+  font-size: 3rem;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.education-skill-icon-item:hover .skill-icon {
+  color: #007396; 
+}
+
+.education-skill-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #555;
+}
+
+.education-spline-bottom {
+  flex-grow: 1;
+  min-height: 300px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
+}
+
+.education-spline-bottom canvas {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 20px;
 }
 
 /* --- Responsive Media Queries --- */
 
-/* Tablet (Max 900px) */
+/* Tablet & Mobile Layout */
 @media screen and (max-width: 900px) {
   .education-container {
     grid-template-columns: 1fr;
-    gap: 3rem;
+    gap: 2rem;
   }
 }
 
-/* Mobile (Max 480px) - CRITICAL FIXES HERE */
+/* MOBILE SPECIFIC ADJUSTMENTS */
 @media screen and (max-width: 480px) {
   .education-section-wrapper {
     padding: 2rem 1rem;
   }
+  
+  /* Keep fixed height, but ensure it's not taller than screen allows */
+  .education-card,
+  .VTURCS-card {
+    height: 280px; /* Slight reduction for small screens */
+  }
 
-  /* Reduce Padding to give text more room */
+  /* CRITICAL: Reduce padding to make room for text */
   .education-details {
-    padding: 1.5rem 1.25rem;
+    padding: 1.25rem; 
     
-    /* On mobile, darken the bg more so text pops */
+    /* Darker gradient on mobile so white text pops against any background */
     background: linear-gradient(
       to top,
-      rgba(0, 0, 0, 0.95) 20%,
+      rgba(0, 0, 0, 0.95) 25%,
       rgba(0, 0, 0, 0.8) 60%,
-      rgba(0, 0, 0, 0.2) 100%
+      rgba(0, 0, 0, 0.1) 100%
     );
   }
 
-  /* Fix Font Sizes for small screens */
+  /* Shrink Fonts so they fit inside the box */
   .education-degree {
-    font-size: 1.4rem; /* Smaller title */
+    font-size: 1.4rem;
+    margin-bottom: 0.2rem;
   }
 
   .education-institution {
-    font-size: 1rem;
+    font-size: 0.95rem; /* Smaller sub-header */
+    line-height: 1.3;
   }
   
   .education-description {
-    font-size: 0.9rem; /* Smaller description */
-    line-height: 1.4;
+    font-size: 0.85rem; /* Compact text */
+    margin-top: 0.4rem;
+    
+    /* Show more lines if possible, but limit to prevent overflow */
+    -webkit-line-clamp: 4; 
   }
 
-  /* Skills & Spline adjustments */
+  /* Skills & Spline */
   .education-skills-row {
     gap: 1rem;
   }
-
   .skill-icon {
     font-size: 2rem;
   }
-  
   .education-spline-bottom {
     min-height: 250px;
   }

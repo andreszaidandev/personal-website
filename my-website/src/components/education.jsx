@@ -42,7 +42,7 @@ function Education() {
               <h3 className="education-degree">VTURCS</h3>
               <p className="education-institution">Virginia Tech Undergraduate Research and CapStone</p>
               <p className="education-dates">2nd in peoples category · 3rd in judges category</p>
-              <p className="education-description">Implemented a system for the Graduate deparment to automaize, digitalize and simplify Plans of Study for graduate students and faculty.</p>
+              <p className="education-description">Implemented a system for the Graduate deparment to automate, digitalize and simplify Plans of Study for graduate students and faculty.</p>
             </div>
           </div>
         </div>
