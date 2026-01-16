@@ -1,4 +1,3 @@
-// src/components/Education.jsx
 import "./education.css";
 import vtLogo from "../assets/Vtech.jpg";
 import vturcsLogo from "../assets/vturcs.jpg";
