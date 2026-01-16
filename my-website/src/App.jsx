@@ -44,7 +44,7 @@ function App() {
   return (
     <>
       <Navbar activeSection={activeSection} />
-      {/* <Cat /> */}
+      <Cat />
       <main>
         <section id="Profile">
           <Hero />

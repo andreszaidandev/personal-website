@@ -1,40 +1,29 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './cat.css';
 
-// ... (Keep your SpritePlayer component exactly as it is) ...
+// --- SPRITE PLAYER (Unchanged) ---
 const SpritePlayer = ({ 
-  src, 
-  frameWidth, 
-  frameHeight, 
-  frameCount, 
-  fps = 10, 
-  loop = true, 
-  onFinish = null, 
-  scale = 1,
-  onClick
+  src, frameWidth, frameHeight, frameCount, fps = 10, loop = true, 
+  onFinish = null, scale = 1, onClick
 }) => {
   const [frame, setFrame] = useState(0);
 
-  useEffect(() => {
-    setFrame(0);
-  }, [src]);
+  useEffect(() => { setFrame(0); }, [src]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
       setFrame((prevFrame) => {
         const nextFrame = prevFrame + 1;
         if (nextFrame >= frameCount) {
-          if (loop) {
-            return 0; 
-          } else {
-            if (onFinish) onFinish(); 
-            return frameCount - 1;    
+          if (loop) return 0;
+          else {
+            if (onFinish) onFinish();
+            return frameCount - 1;
           }
         }
         return nextFrame;
       });
     }, 1000 / fps);
-
     return () => clearInterval(intervalId);
   }, [fps, frameCount, loop, onFinish, src]);
 
@@ -46,75 +35,105 @@ const SpritePlayer = ({
     backgroundPosition: `-${frame * frameWidth}px 0px`,
     imageRendering: 'pixelated',
     transform: `scale(${scale})`,
-    transformOrigin: 'bottom left', // CHANGED: Scales up from the corner
+    transformOrigin: 'bottom left',
     cursor: 'pointer' 
   };
 
   return <div style={spriteStyle} onClick={onClick} />;
 };
 
-
 // --- MAIN COMPONENT ---
-// Imports... (Assuming your imports are the same)
 import idleImg from '../assets/IdleCat.png';
 import sleepImg from '../assets/toSleep.png';
 import wakeImg from '../assets/wakeUp.png';
 
+const KONAMI_CODE = [
+  'ArrowUp', 'ArrowUp', 
+  'ArrowDown', 'ArrowDown', 
+  'ArrowLeft', 'ArrowRight', 
+  'ArrowLeft', 'ArrowRight', 
+  'b', 'a'
+];
+
 function Cat() {
   const [catState, setCatState] = useState('IDLE');
-  
-  // NEW: State to track screen size for mobile scaling
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  
+  // NEW: Visibility State
+  const [isVisible, setIsVisible] = useState(false);
+  
+  // NEW: Ref to store user input history
+  const keyHistory = useRef([]);
 
   const inactivityTimer = useRef(null);
 
+  // 1. Logic to Reset Sleep Timer
   const resetTimer = () => {
     if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
-
-    if (catState === 'IDLE') {
+    if (catState === 'IDLE' && isVisible) {
       inactivityTimer.current = setTimeout(() => {
         setCatState('SLEEPING');
       }, 5000); 
     }
   };
 
-  // 1. UPDATED: Handle Window Resize
+  // 2. Logic to detect Konami Code
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+    const handleKeyDown = (e) => {
+      // Add new key to history
+      keyHistory.current = [...keyHistory.current, e.key];
 
-  // 2. UPDATED: Event Listeners for Mobile & Desktop
+      // Keep history only as long as the code (optimization)
+      if (keyHistory.current.length > KONAMI_CODE.length) {
+        keyHistory.current.shift();
+      }
+
+      // Check if history matches code
+      if (JSON.stringify(keyHistory.current) === JSON.stringify(KONAMI_CODE)) {
+        setIsVisible(prev => !prev);
+        // Optional: Reset history so typing 'a' again doesn't re-trigger immediately
+        keyHistory.current = []; 
+      }
+      
+      // Also trigger the "wake up/stay awake" timer on keypress
+      resetTimer();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isVisible]); // Re-bind if visibility changes
+
+
+  // 3. Standard Layout/Resize Effects
   useEffect(() => {
-    // We bind to both mousemove (desktop) and touchstart (mobile)
-    window.addEventListener('mousemove', resetTimer);
-    window.addEventListener('touchstart', resetTimer);
-    window.addEventListener('keydown', resetTimer); // Bonus: typing keeps him awake
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
     
-    resetTimer();
+    // Listeners for activity (only relevant if cat is visible)
+    if (isVisible) {
+      window.addEventListener('mousemove', resetTimer);
+      window.addEventListener('touchstart', resetTimer);
+      resetTimer(); // Start timer immediately when he appears
+    }
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', resetTimer);
       window.removeEventListener('touchstart', resetTimer);
-      window.removeEventListener('keydown', resetTimer);
       if (inactivityTimer.current) clearTimeout(inactivityTimer.current);
     };
-  }, [catState]); 
+  }, [catState, isVisible]); 
 
   const handleCatClick = () => {
-    if (catState === 'SLEEPING') {
-      setCatState('WAKING');
-    }
+    if (catState === 'SLEEPING') setCatState('WAKING');
   };
 
   const handleAnimationFinish = () => {
-    if (catState === 'WAKING') {
-      setCatState('IDLE');
-    }
+    if (catState === 'WAKING') setCatState('IDLE');
   };
+
+  // If the code hasn't been entered, render nothing!
+  if (!isVisible) return null;
 
   const spriteConfig = {
     IDLE: { src: idleImg, frames: 11, loop: true },
@@ -125,8 +144,6 @@ function Cat() {
   const currentConfig = spriteConfig[catState];
 
   return (
-    // Note: We removed the .root container wrapper here so the cat 
-    // can sit on top of whatever else is on your website.
     <div className="cat-container">
       <SpritePlayer
         key={catState}
@@ -137,7 +154,6 @@ function Cat() {
         onClick={handleCatClick}
         frameWidth={32} 
         frameHeight={32}
-        // 3. UPDATED: Dynamic Scale based on device
         scale={isMobile ? 4 : 8} 
         fps={8}
       />
