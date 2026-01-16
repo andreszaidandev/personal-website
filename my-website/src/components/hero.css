@@ -1,10 +1,16 @@
+/* --- Base Styles (Updated for Fluidity) --- */
+
 .hero-card {
   background: #f5f5f5;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   padding: 2rem;
-  margin: 2rem;
+  /* Changed from fixed margin to responsive max-width/auto */
+  margin: 2rem auto; 
+  max-width: 1100px;
+  width: 90%; /* Prevents card from touching edges on small screens */
 }
+
 .hero {
   display: flex;
   align-items: center;
@@ -14,15 +20,22 @@
 }
 
 .hero-image {
-  width: 360px;
-  height: 480px;
-
+  /* CRITICAL MOBILE FIX: */
+  /* Remove fixed width/height. Use max-width for limits. */
+  width: 100%; 
+  max-width: 360px; /* Stops it getting too big on desktop */
+  height: auto; /* Maintains aspect ratio */
+  aspect-ratio: 3 / 4; /* Optional: preserves the shape of your original dimensions */
+  
   object-fit: cover;
+  border-radius: 8px; /* Added radius to match card vibe */
   border: 3px solid var(--color-primary);
 }
 
 .hero-content {
   max-width: 500px;
+  /* Ensure content doesn't overflow flex container */
+  min-width: 0; 
 }
 
 .hero-greeting {
@@ -34,8 +47,10 @@
 }
 
 .hero-name {
-  font-size: 2.6rem;
+  /* Use clamp for responsive font size (min, val, max) */
+  font-size: clamp(2rem, 5vw, 2.6rem); 
   margin: 0.3rem 0;
+  line-height: 1.2;
 }
 
 .hero-title {
@@ -48,16 +63,25 @@
   margin-bottom: 1.8rem;
 }
 
-/* Buttons */
+/* --- Buttons --- */
+.hero-buttons {
+  /* Added container for easier alignment control */
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap; /* Allows buttons to stack on very small screens */
+}
+
 .btn {
-  display: inline-block;
-  padding: 0.6rem 1.4rem;
+  display: inline-flex; /* Better centering than inline-block */
+  justify-content: center;
+  align-items: center;
+  padding: 0.7rem 1.4rem; /* Slightly larger touch target */
   border-radius: 999px;
   font-size: 0.95rem;
   text-decoration: none;
   border: 1px solid transparent;
   cursor: pointer;
-  margin-right: 0.75rem;
+  /* Removed margin-right in favor of flex gap in container */
   transition: all .2s ease;
 }
 
@@ -81,34 +105,70 @@
   background: rgba(251,150,55,0.12);
 }
 
-@media (max-width: 768px) {
-  .hero {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .hero-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
+/* --- Socials --- */
 .hero-socials {
   display: flex;
   align-items: center;
   gap: 1.2rem;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
-/* Make icons bigger + use accent orange */
 .hero-socials a {
   font-size: 1.75rem;
   color: var(--color-primary);
   transition: transform 0.2s ease, color 0.2s ease;
+  /* Add padding for better touch targets on mobile */
+  padding: 5px; 
 }
 
-/* Hover pop */
 .hero-socials a:hover {
   transform: translateY(-2px);
-  color: #fdab5d; /* lighter orange */
+  color: #fdab5d;
+}
+
+/* --- MOBILE & TABLET MEDIA QUERIES --- */
+
+/* Tablet and below */
+@media (max-width: 900px) {
+  .hero {
+    flex-direction: column-reverse; /* Puts text on top, image on bottom? Or keep 'column' for image top */
+    text-align: center;
+    padding: 2rem 1rem;
+    gap: 2rem;
+  }
+  
+  .hero-content {
+    margin: 0 auto;
+  }
+
+  /* Center the button container */
+  .hero-buttons {
+    justify-content: center;
+  }
+
+  /* Center the socials container */
+  .hero-socials {
+    justify-content: center;
+  }
+}
+
+/* Mobile specific tweaks */
+@media (max-width: 480px) {
+  .hero-card {
+    padding: 1.5rem;
+    width: 95%; /* Use more screen width */
+    margin: 1rem auto;
+  }
+
+  .hero-name {
+    font-size: 1.8rem;
+  }
+  
+  .hero-image {
+    max-width: 280px; /* Make image slightly smaller on phones so it doesn't dominate */
+  }
+
+  .btn {
+    width: 100%; /* Full width buttons on very small screens often look better */
+  }
 }
