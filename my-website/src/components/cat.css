@@ -1,0 +1,16 @@
+/* Container to position the cat on the screen */
+.cat-container {
+  position: fixed;   /* Sticks to the viewport */
+  bottom: 0px;       /* Align to bottom */
+  left: 20px;        /* 20px from the left edge */
+  z-index: 9999;     /* Ensures the cat sits on top of other content */
+  
+  /* Prevent the cat container from blocking clicks on elements behind it 
+     (except the cat itself, which has pointer-events: auto by default) */
+  pointer-events: none; 
+}
+
+/* Re-enable clicks specifically on the sprite div */
+.cat-container > div {
+  pointer-events: auto;
+}

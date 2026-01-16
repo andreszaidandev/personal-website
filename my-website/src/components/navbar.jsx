@@ -24,12 +24,6 @@ function Navbar({ activeSection }) {
           Projects
         </a>
         <a
-          href="#Experience"
-          className={activeSection === "Experience" ? "active" : ""}
-        >
-          Experience
-        </a>
-        <a
           href="#Contact"
           className={activeSection === "Contact" ? "active" : ""}
         >

@@ -4,7 +4,7 @@ import Navbar from "./components/navbar";
 import Hero from "./components/hero";
 import Education from "./components/education";
 import Projects from "./components/projects";
-
+import Cat from "./components/cat";
 // import other sections...
 import "./App.css";
 
@@ -15,7 +15,7 @@ function App() {
   const [activeSection, setActiveSection] = useState("Profile");
 
   useEffect(() => {
-    const sectionIds = ["Profile", "Education", "Projects", "Experience", "Contact","Resume"];
+    const sectionIds = ["Profile", "Education", "Projects", "Contact","Resume"];
 
     function onScroll() {
       const scrollPos = window.scrollY + 200; // 200px offset from top
@@ -44,7 +44,7 @@ function App() {
   return (
     <>
       <Navbar activeSection={activeSection} />
-
+      {/* <Cat /> */}
       <main>
         <section id="Profile">
           <Hero />
@@ -56,10 +56,6 @@ function App() {
 
         <section id="Projects">
           <Projects />
-        </section>
-
-        <section id="Experience">
-          
         </section>
 
         <section id="Contact">
